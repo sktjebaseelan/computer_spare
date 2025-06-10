@@ -47,8 +47,10 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildStatsGrid(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
+    double screenWidth = mediaQuery.size.width;
     return GridView.count(
-      crossAxisCount: 4,
+      crossAxisCount: screenWidth > 880 ? 4 : 2,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       childAspectRatio: 1.5,
@@ -89,31 +91,41 @@ class HomeScreen extends StatelessWidget {
     IconData icon,
     Color color,
   ) {
-    return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 32, color: color),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Adjust sizes based on available width
+        double iconSize = constraints.maxWidth > 400 ? 48 : 28;
+        double valueFontSize = constraints.maxWidth > 400 ? 38 : 18;
+        double titleFontSize = constraints.maxWidth > 400 ? 26 : 12;
+        double padding = constraints.maxWidth > 400 ? 30 : 10;
+
+        return Card(
+          elevation: 4,
+          child: Padding(
+            padding: EdgeInsets.all(padding),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, size: iconSize, color: color),
+                const SizedBox(height: 8),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: valueFontSize,
+                    fontWeight: FontWeight.bold,
+                    color: color,
+                  ),
+                ),
+                Text(
+                  title,
+                  style: TextStyle(fontSize: titleFontSize),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-            Text(
-              title,
-              style: const TextStyle(fontSize: 14),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
