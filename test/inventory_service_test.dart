@@ -1,6 +1,5 @@
+import 'package:computer_spares_service/services/inventory_service.dart';
 import 'package:flutter_test/flutter_test.dart';
-import '../lib/models/spare_part.dart';
-import '../lib/services/inventory_service.dart';
 
 void main() {
   group('InventoryService Tests', () {
